@@ -1,4 +1,3 @@
-/*
 package com.hieuboy.demo.kafka.zookeeper;
 
 import lombok.Getter;
@@ -23,4 +22,3 @@ public class ZookeeperClient {
     }
 
 }
-*/
