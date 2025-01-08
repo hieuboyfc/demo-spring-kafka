@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.7'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.hieuboy.demo'
+version = '0.0.1-SNAPSHOT'
+
+bootRun {
+    jvmArgs = ['-Xmx4g', '-XX:+UseContainerSupport', '-XX:MaxRAMPercentage=75']
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'org.apache.kafka:kafka-streams'
+
+    // https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper
+    implementation 'org.apache.zookeeper:zookeeper:3.9.3'
+
+    // https://mvnrepository.com/artifact/com.lmax/disruptor
+    implementation 'com.lmax:disruptor:4.0.0'
+
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+
+    // https://mvnrepository.com/artifact/io.vertx/vertx-core
+    implementation 'io.vertx:vertx-core:4.5.11'
+
+    implementation 'com.google.guava:guava:31.1-jre'
+
+    runtimeOnly "org.postgresql:postgresql"
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

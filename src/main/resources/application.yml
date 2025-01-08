@@ -1,0 +1,67 @@
+APPLICATION_NAME: demo-spring-kafka
+DB_SCHEMA: ehs_workplace_safe_service
+DB_HOST: 172.16.101.39
+DB_URL: jdbc:postgresql://${DB_HOST}:5432/nspace?stringtype=unspecified
+DB_USERNAME: xdp
+DB_PASSWORD: gjEyCJRruMz28kw96OWXy5JBN9pOROXT
+KAFKA_URL: localhost:9092,localhost:9094,localhost:9096
+ZOOKEEPER_URL: localhost:2181
+DATE_FORMAT: yyyy-MM-dd'T'HH:mm:ssZ
+TZ: Asia/Ho_Chi_Minh
+
+spring:
+  application:
+    name: ${APPLICATION_NAME}
+
+  jackson:
+    date-format: ${DATE_FORMAT}
+    time-zone: ${TZ}
+
+  main:
+    allow-bean-definition-overriding: true
+
+  output:
+    ansi:
+      enabled: never
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: ${DB_SCHEMA}
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  flyway:
+    schemas:
+      - ${DB_SCHEMA}
+    enabled: false
+
+  kafka:
+    bootstrap-servers: ${KAFKA_URL}
+    topic: zimji-test
+    group-id: zimji-service
+    consumer:
+      auto-offset-reset: latest
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+
+  zookeeper:
+    connect-string: ${ZOOKEEPER_URL} # Địa chỉ của ZooKeeper server
+    session-timeout: 3000 # Thời gian session timeout (3 giây)
+    connection-timeout: 3000 # Thời gian timeout khi kết nối
+    max-retries: 3 # Số lần thử lại kết nối khi thất bại
+    retry-interval: 1000  # Thời gian giữa các lần thử lại (ms)
+
+zimji:
+  application: zimji-service
+  sync-handler:
+    test-sync: test-sync-topic
